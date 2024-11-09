@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramo de Flores en el Bosque</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        .escena {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background-image: url('https://static.vecteezy.com/system/resources/previews/036/226/872/non_2x/ai-generated-nature-landscapes-background-free-photo.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        .ramo {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            z-index: 10;
+        }
+        .flor-con-tallo {
+            position: absolute;
+            transition: transform 0.3s ease;
+        }
+        .flor {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .petalo {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #8a2be2;
+            border-radius: 50% 0 50% 50%;
+            transform-origin: 100% 100%;
+            box-shadow: 0 0 5px rgba(138, 43, 226, 0.5);
+        }
+        .centro {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ffd700;
+            border-radius: 50%;
+            top: 20px;
+            left: 20px;
+            box-shadow: inset 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+        .tallo {
+            width: 3px;
+            background-color: #228B22;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .luciernaga {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background-color: #FFFF00;
+            border-radius: 50%;
+            animation: brillar 2s ease-in-out infinite alternate;
+            box-shadow: 0 0 5px #FFFF00;
+        }
+        @keyframes brillar {
+            from { opacity: 0.2; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="escena">
+        <div class="overlay" aria-hidden="true"></div>
+        <div class="ramo" id="ramo"></div>
+    </div>
+
+    <script>
+        const ramo = document.getElementById('ramo');
+        const escena = document.querySelector('.escena');
+        const numFlores = 7;
+        const numLuciérnagas = 20;
+
+        function crearFlorConTallo(x, y) {
+            const florConTallo = document.createElement('div');
+            florConTallo.className = 'flor-con-tallo';
+            florConTallo.style.left = `${x}px`;
+            florConTallo.style.bottom = '0';
+
+            const flor = document.createElement('div');
+            flor.className = 'flor';
+            
+            for (let i = 0; i < 5; i++) {
+                const petalo = document.createElement('div');
+                petalo.className = 'petalo';
+                petalo.style.transform = `rotate(${i * 72}deg)`;
+                flor.appendChild(petalo);
+            }
+
+            const centro = document.createElement('div');
+            centro.className = 'centro';
+            flor.appendChild(centro);
+            
+            const tallo = document.createElement('div');
+            tallo.className = 'tallo';
+            const talloHeight = 150 + Math.random() * 100;
+            tallo.style.height = `${talloHeight}px`;
+            
+            florConTallo.appendChild(tallo);
+            florConTallo.appendChild(flor);
+            florConTallo.style.height = `${talloHeight + 60}px`;
+            
+            ramo.appendChild(florConTallo);
+
+            florConTallo.addEventListener('mouseover', () => {
+                florConTallo.style.transform = `rotate(${Math.random() * 10 - 5}deg)`;
+            });
+
+            florConTallo.addEventListener('mouseout', () => {
+                florConTallo.style.transform = 'rotate(0deg)';
+            });
+        }
+
+        function crearLuciernaga() {
+            const luciernaga = document.createElement('div');
+            luciernaga.className = 'luciernaga';
+            luciernaga.style.left = `${Math.random() * 100}%`;
+            luciernaga.style.top = `${Math.random() * 100}%`;
+            luciernaga.style.animationDelay = `${Math.random() * 2}s`;
+            escena.appendChild(luciernaga);
+        }
+
+        for (let i = 0; i < numFlores; i++) {
+            const x = 30 + Math.random() * 240;
+            crearFlorConTallo(x);
+        }
+
+        for (let i = 0; i < numLuciérnagas; i++) {
+            crearLuciernaga();
+        }
+    </script>
+</body>
+</html>
